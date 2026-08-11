@@ -1,0 +1,25 @@
+{
+	"name": "senior-js-aqa-roadmap",
+	"version": "1.0.0",
+	"description": "Репозиторий создан для практической отработки навыков и глубокого погружения в JavaScript и TypeScript. Цель — освоение продвинутых концепций языка, архитектуры тест-фреймворков и инфраструктурных решений до уровня Senior AQA / SDET.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"typecheck": "tsc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/stalinav5379-web/senior-js-aqa-roadmap.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/stalinav5379-web/senior-js-aqa-roadmap/issues"
+	},
+	"homepage": "https://github.com/stalinav5379-web/senior-js-aqa-roadmap#readme",
+	"devDependencies": {
+		"@types/node": "^26.2.0",
+		"typescript": "^7.0.2"
+	}
+}

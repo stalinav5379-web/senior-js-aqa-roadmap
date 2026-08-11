@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>JS AQA + TypeScript Cheat Sheet</title>
+<style>
+  @page { size: A4 landscape; margin: 8mm; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 8.5px;
+    line-height: 1.35;
+    color: #1a1a2e;
+    background: white;
+  }
+
+  .page {
+    width: 277mm;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 4px;
+    padding: 2px;
+  }
+
+  .card {
+    border: 1px solid #d0d7f0;
+    border-radius: 5px;
+    padding: 5px 6px;
+    background: #fff;
+    break-inside: avoid;
+  }
+
+  .card.wide   { grid-column: span 2; }
+  .card.triple { grid-column: span 3; }
+  .card.full   { grid-column: span 4; }
+
+  h1 {
+    font-size: 13px;
+    color: #1a1a2e;
+    grid-column: span 4;
+    padding: 3px 0 2px;
+    border-bottom: 2px solid #3b5bdb;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  h1 span { font-size: 9px; color: #666; font-weight: normal; }
+
+  h2 {
+    font-size: 9px;
+    font-weight: 700;
+    color: #3b5bdb;
+    border-bottom: 1px solid #e0e7ff;
+    padding-bottom: 2px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 7px;
+    background: #3b5bdb;
+    color: white;
+    border-radius: 3px;
+    padding: 1px 4px;
+    margin-left: 4px;
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: 0;
+    vertical-align: middle;
+  }
+
+  .tag.warn   { background: #e67700; }
+  .tag.ok     { background: #2b8a3e; }
+  .tag.red    { background: #c92a2a; }
+  .tag.purple { background: #7048e8; }
+
+  p { margin-bottom: 3px; }
+
+  code, pre {
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 7.5px;
+    background: #f1f3f9;
+    border-radius: 3px;
+  }
+
+  pre {
+    padding: 4px 5px;
+    margin: 3px 0;
+    overflow: hidden;
+    border-left: 2px solid #748ffc;
+    white-space: pre-wrap;
+  }
+
+  pre.bad  { border-left-color: #e03131; }
+  pre.good { border-left-color: #2b8a3e; }
+  pre.warn { border-left-color: #e67700; }
+
+  code { padding: 0 2px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.5px;
+    margin: 3px 0;
+  }
+
+  th {
+    background: #e7ecff;
+    color: #1a1a2e;
+    font-weight: 700;
+    padding: 2px 4px;
+    text-align: left;
+    border: 1px solid #c5cee0;
+  }
+
+  td {
+    padding: 2px 4px;
+    border: 1px solid #dde2f0;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td { background: #f8f9ff; }
+
+  .row { display: flex; gap: 4px; }
+  .col { flex: 1; }
+
+  .def { margin-bottom: 3px; }
+  .def strong { color: #3b5bdb; }
+
+  .note {
+    font-size: 7.5px;
+    color: #5c5f75;
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .tree {
+    font-family: monospace;
+    font-size: 7.5px;
+    background: #f1f3f9;
+    padding: 3px 5px;
+    border-radius: 3px;
+    border-left: 2px solid #748ffc;
+    margin: 3px 0;
+    white-space: pre;
+  }
+
+  .badge {
+    display: inline-block;
+    width: 13px; height: 13px;
+    background: #3b5bdb;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 7.5px;
+    font-weight: bold;
+    line-height: 13px;
+    margin-right: 3px;
+    flex-shrink: 0;
+  }
+
+  .inline-row { display: flex; align-items: baseline; gap: 3px; margin-bottom: 2px; }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    width: 277mm;
+    display: flex;
+    gap: 6px;
+    padding: 5px 2px 4px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #d0d7f0;
+    align-items: center;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #5c5f75;
+    margin-right: 4px;
+  }
+
+  .nav-btn {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 14px;
+    border: 1.5px solid #3b5bdb;
+    border-radius: 4px;
+    cursor: pointer;
+    background: white;
+    color: #3b5bdb;
+  }
+
+  .nav-btn:hover { background: #e7ecff; }
+
+  .nav-btn.active {
+    background: #3b5bdb;
+    color: white;
+  }
+
+  @media print {
+    .nav-bar { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <span class="nav-label">Шпаргалка:</span>
+  <button class="nav-btn active" id="btn-js" onclick="showPage('js')">JS / AQA — Days 1–6</button>
+  <button class="nav-btn" id="btn-ts" onclick="showPage('ts')">TypeScript — Day 29</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 1 — JS / AQA
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-js">
+
+  <h1>JS / AQA Cheat Sheet <span>var · let · const · functions · closures · this · copy · destructuring · spread/rest</span></h1>
+
+  <!-- CARD 1: var / let / const -->
+  <div class="card">
+    <h2>var / let / const <span class="tag">Day 1</span></h2>
+    <table>
+      <tr><th></th><th>var</th><th>let</th><th>const</th></tr>
+      <tr><td><strong>Scope</strong></td><td>Function</td><td>Block <code>{}</code></td><td>Block <code>{}</code></td></tr>
+      <tr><td><strong>Re-declare</strong></td><td>✅ Да</td><td>❌ Нет</td><td>❌ Нет</td></tr>
+      <tr><td><strong>Re-assign</strong></td><td>✅ Да</td><td>✅ Да</td><td>❌ Нет</td></tr>
+      <tr><td><strong>Hoisting</strong></td><td><code>undefined</code></td><td>TDZ ❌</td><td>TDZ ❌</td></tr>
+    </table>
+    <p class="note">TDZ (Temporal Dead Zone) — обращение до объявления = <code>ReferenceError</code></p>
+    <pre>console.log(a); // undefined
+var a = 5;
+
+console.log(b); // ReferenceError!
+let b = 10;</pre>
+    <p class="note">⚠️ <code>const</code> с объектом: менять поля можно, заменить объект целиком — нет.</p>
+  </div>
+
+  <!-- CARD 2: Arrow vs Regular -->
+  <div class="card">
+    <h2>Arrow vs Regular Function <span class="tag">Day 2</span></h2>
+    <table>
+      <tr><th>Признак</th><th>Regular <code>function(){}</code></th><th>Arrow <code>()=>{}</code></th></tr>
+      <tr><td><strong>this</strong></td><td>Динамический (по вызову)</td><td>Лексический (из родителя)</td></tr>
+      <tr><td><strong>new</strong></td><td>✅ Конструктор</td><td>❌ Ошибка</td></tr>
+      <tr><td><strong>arguments</strong></td><td>✅ псевдомассив</td><td>❌ нет (используй <code>...args</code>)</td></tr>
+      <tr><td><strong>bind/call/apply</strong></td><td>✅ Меняет this</td><td>❌ Не действует</td></tr>
+    </table>
+    <div class="note" style="margin-top:3px">
+      <strong>Playwright:</strong> стрелочные ✅ &nbsp;|&nbsp; <strong>Cypress/Mocha + <code>this.*</code>:</strong> обычные ✅
+    </div>
+    <pre class="bad">// Cypress — НЕЛЬЗЯ со стрелкой
+it('test', () => { this.user; }); // undefined!</pre>
+    <pre class="good">// Cypress — МОЖНО
+it('test', function() { this.user; }); // ✅</pre>
+  </div>
+
+  <!-- CARD 3: Closures -->
+  <div class="card">
+    <h2>Замыкание (Closure) <span class="tag">Day 2</span></h2>
+    <p>Функция «запоминает» переменные из внешней области видимости даже после того, как та завершила выполнение.</p>
+    <pre>function createIdGenerator() {
+  let id = 1; // скрытая переменная
+
+  return function() {
+    return id++; // доступ к id через замыкание
+  };
+}
+
+const nextId = createIdGenerator();
+nextId(); // 1
+nextId(); // 2  ← id изолирован!</pre>
+    <p class="note">Применение: счётчики шагов, изолированные логгеры, генераторы тестовых данных, инкапсуляция.</p>
+  </div>
+
+  <!-- CARD 4: this decision tree -->
+  <div class="card">
+    <h2>Определение <code>this</code> <span class="tag">Day 3</span></h2>
+    <div class="tree">1. Вызов с new?  → this = новый объект
+2. .call/.apply/.bind?
+         → this = явно переданный объект
+3. Метод объекта (obj.fn())?
+         → this = obj
+4. Стрелочная функция?
+         → this = из родителя (Lexical)
+5. Иначе:
+   strict  → this = undefined
+   sloppy  → this = global</div>
+    <p class="note" style="margin-top:4px"><strong>Ловушка:</strong> передача метода как коллбека — this теряется!</p>
+    <pre class="bad">await test.step("...", page.fill); // ❌ потеря this</pre>
+    <pre class="good">await test.step("...", () => page.fill()); // ✅
+await test.step("...", page.fill.bind(page)); // ✅</pre>
+  </div>
+
+  <!-- CARD 5: call / apply / bind -->
+  <div class="card">
+    <h2>.call / .apply / .bind <span class="tag">Day 3</span></h2>
+    <table>
+      <tr><th>Метод</th><th>Вызов</th><th>Аргументы</th><th>Применение</th></tr>
+      <tr><td><code>.call()</code></td><td>Мгновенный</td><td>Перечисление</td><td>Одолжить метод</td></tr>
+      <tr><td><code>.apply()</code></td><td>Мгновенный</td><td>Массив <code>[]</code></td><td>Аргументы в виде массива</td></tr>
+      <tr><td><code>.bind()</code></td><td>Возвращает функцию</td><td>Перечисление</td><td>Зафиксировать this заранее</td></tr>
+    </table>
+    <pre>fn.call(ctx, arg1, arg2)
+fn.apply(ctx, [arg1, arg2])
+const bound = fn.bind(ctx, presetArg)</pre>
+    <pre>// Заимствование метода:
+dropdownHelper.call(this, "#sel", "val");
+
+// Коллбек с сохранением ctx:
+setTimeout(btn.click.bind(btn), 1000);</pre>
+  </div>
+
+  <!-- CARD 6: Shallow vs Deep Copy -->
+  <div class="card">
+    <h2>Копирование объектов <span class="tag">Day 4</span></h2>
+    <p class="def"><strong>Примитивы</strong> — копируются по значению (независимая копия).</p>
+    <p class="def"><strong>Объекты</strong> — копируется только ссылка! Оба смотрят на один объект в Heap.</p>
+    <table>
+      <tr><th>Метод</th><th>Уровень</th><th>Нюанс</th></tr>
+      <tr><td><code>{ ...obj }</code></td><td>Shallow</td><td>Вложенные — по ссылке!</td></tr>
+      <tr><td><code>Object.assign({}, obj)</code></td><td>Shallow</td><td>То же самое</td></tr>
+      <tr><td><code>structuredClone(obj)</code></td><td><strong>Deep ✅</strong></td><td>Node v17+, без функций</td></tr>
+      <tr><td><code>JSON.parse(JSON.stringify)</code></td><td><strong>Deep</strong></td><td>Ломает Date, undefined, fn</td></tr>
+    </table>
+    <pre class="good">const safe = structuredClone(fixture);
+safe.nested.id = 99;
+// fixture.nested.id — не тронут ✅</pre>
+  </div>
+
+  <!-- CARD 7: freeze/seal -->
+  <div class="card">
+    <h2>freeze / seal / preventExtensions <span class="tag">Day 4</span></h2>
+    <table>
+      <tr><th>Метод</th><th>Добавить</th><th>Удалить</th><th>Изменить</th></tr>
+      <tr><td><code>preventExtensions</code></td><td>❌</td><td>✅</td><td>✅</td></tr>
+      <tr><td><code>seal()</code></td><td>❌</td><td>❌</td><td>✅</td></tr>
+      <tr><td><code>freeze()</code></td><td>❌</td><td>❌</td><td>❌</td></tr>
+    </table>
+    <p class="note">⚠️ Все методы — поверхностные (shallow). Вложенные объекты не заморожены!</p>
+    <pre>// Deep Freeze (рекурсивно):
+function deepFreeze(obj) {
+  Object.keys(obj).forEach(k => {
+    if (typeof obj[k] === 'object') deepFreeze(obj[k]);
+  });
+  return Object.freeze(obj);
+}</pre>
+    <p class="note">В строгом режиме (<code>"use strict"</code>) попытка изменить → <code>TypeError</code>.</p>
+  </div>
+
+  <!-- CARD 8: Destructuring -->
+  <div class="card wide">
+    <h2>Деструктуризация (Destructuring) <span class="tag">Day 5</span></h2>
+    <p>Распаковывает значения массива / свойства объекта в переменные одной строкой.</p>
+    <div class="row">
+      <div class="col">
+        <pre>// Объект
+const { name, status } = testResult;
+
+// Переименование
+const { id: userId, data: username } = resp;
+
+// Дефолт
+const { timeout = 30000 } = config;
+
+// Параметр функции
+function log({ name, status }) { ... }
+
+// Вложенный
+const { db: { port } } = config;</pre>
+      </div>
+      <div class="col">
+        <pre>// Массив
+const [first, second] = arr;
+
+// Пропуск элементов
+const [, , third] = arr;
+
+// Swap переменных
+[a, b] = [b, a];
+
+// С дефолтом
+const [x = 0, y = 0] = coords;
+
+// Rest в массиве
+const [head, ...tail] = arr;</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 9: Spread / Rest -->
+  <div class="card wide">
+    <h2>Spread <code>...</code> / Rest <code>...</code> <span class="tag">Day 5</span></h2>
+    <div class="row">
+      <div class="col">
+        <p><strong>Spread</strong> — развёртывает (в правой части <code>=</code> или в аргументах):</p>
+        <pre>// Слияние объектов (иммутабельно):
+const staging = { ...dev, env: "staging" };
+
+// Слияние массивов:
+const all = [...smoke, ...regression, "new.js"];
+
+// Разворот в аргументы функции:
+Math.max(...numbers)</pre>
+      </div>
+      <div class="col">
+        <p><strong>Rest</strong> — собирает остаток (в левой части <code>=</code> или в параметрах):</p>
+        <pre>// Параметры функции:
+function run(...suites) {
+  suites.forEach(s => console.log(s));
+}
+
+// Omit pattern (убрать поля):
+const { password, ...safeData } = payload;
+// safeData — всё кроме password ✅</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 10: Config Module -->
+  <div class="card">
+    <h2>Конфиг-модуль (Fail-Fast) <span class="tag">Day 6</span></h2>
+    <div class="tree">1. TARGET_ENV → выбор стенда
+2. Base Config для стенда
+3. Наложение process.env переменных
+4. Валидация (Fail-Fast)
+5. deepFreeze → защита</div>
+    <pre>// Node.js v20+ без dotenv:
+node --env-file=.env my_test.js
+
+// Fail-Fast валидация:
+if (!config.apiKey) {
+  throw new Error("Missing API_KEY");
+}
+
+// Защита:
+export default deepFreeze(config);</pre>
+    <p class="note">Антипаттерн: обращаться к <code>process.env</code> напрямую из тестов — нет типов, нет валидации.</p>
+  </div>
+
+  <!-- CARD 11: Execution Context -->
+  <div class="card">
+    <h2>Execution Context <span class="tag">Day 3</span></h2>
+    <div class="def"><strong>Call Stack</strong> — хранит EC и примитивы. LIFO-порядок.</div>
+    <div class="def"><strong>Memory Heap</strong> — объекты, массивы, функции (ссылочные типы).</div>
+    <div class="tree">Фаза Создания:
+  → Lexical Environment
+  → Scope Chain
+  → Hoisting (var = undefined, fn = полностью)
+  → Значение this
+
+Фаза Выполнения:
+  → Код построчно, присвоение значений</div>
+    <p class="note">Stack — быстрый, очищается автоматически. Heap — динамический, управляется GC.</p>
+  </div>
+
+  <!-- CARD 12: AQA Quick Reference — FULL WIDTH -->
+  <div class="card full">
+    <h2>Шпаргалка AQA — когда что использовать</h2>
+    <table>
+      <tr>
+        <th>Ситуация</th>
+        <th>Решение</th>
+        <th>Пример</th>
+        <th>Примечание</th>
+      </tr>
+      <tr>
+        <td>Метод в коллбек (теряет <code>this</code>)</td>
+        <td><code>.bind()</code> или <code>() => obj.method()</code></td>
+        <td><code>page.fill.bind(page)</code> или <code>() => page.fill()</code></td>
+        <td>Стрелочные функции захватывают this лексически</td>
+      </tr>
+      <tr>
+        <td>Cypress/Mocha с алиасами <code>this.*</code></td>
+        <td>Обычная функция <code>function(){}</code></td>
+        <td><code>it('test', function() { this.user })</code></td>
+        <td>Arrow fn теряет контекст Mocha</td>
+      </tr>
+      <tr>
+        <td>Изолировать тестовые данные (фикстуры)</td>
+        <td><code>structuredClone(fixture)</code></td>
+        <td>Каждый тест получает независимую копию</td>
+        <td>Spread `{...obj}` — shallow, вложенные объекты остаются общими!</td>
+      </tr>
+      <tr>
+        <td>Защитить конфиг от изменений</td>
+        <td><code>deepFreeze(config)</code></td>
+        <td>Экспортировать только замороженный объект</td>
+        <td><code>Object.freeze()</code> — поверхностный, нужна рекурсия</td>
+      </tr>
+      <tr>
+        <td>Убрать секреты из лога</td>
+        <td>Rest <code>{ password, ...safe }</code></td>
+        <td><code>const { token, ...safePayload } = data</code></td>
+        <td>Новый объект без чувствительных полей</td>
+      </tr>
+      <tr>
+        <td>Объединить конфиги стендов</td>
+        <td>Spread <code>{ ...base, ...env }</code></td>
+        <td><code>const cfg = { ...base, env: "staging" }</code></td>
+        <td>Правое поле перезаписывает левое</td>
+      </tr>
+      <tr>
+        <td>Изолированный счётчик / логгер</td>
+        <td>Замыкание</td>
+        <td><code>createTestLogger("auth")</code> → своя переменная <code>id</code></td>
+        <td>Каждый вызов фабрики = новое независимое замыкание</td>
+      </tr>
+      <tr>
+        <td>Одолжить метод другого объекта</td>
+        <td><code>.call(this, ...args)</code></td>
+        <td><code>helper.call(brandPage, "#sel", "val")</code></td>
+        <td><code>.call</code> — мгновенно, <code>.bind</code> — сохраняет функцию</td>
+      </tr>
+      <tr>
+        <td>Параметры функции с дефолтом</td>
+        <td>Destructuring параметра</td>
+        <td><code>function run({ timeout = 30000, retries = 1 } = {}) {}</code></td>
+        <td><code>= {}</code> в конце — чтобы можно было вызвать без аргументов</td>
+      </tr>
+      <tr>
+        <td>Передать переменное число наборов тестов</td>
+        <td>Rest <code>...suites</code></td>
+        <td><code>function runAll(...suites) { suites.forEach(run) }</code></td>
+        <td>Последний параметр, всегда массив</td>
+      </tr>
+    </table>
+  </div>
+
+</div><!-- /page-js -->
+
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 2 — TypeScript
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-ts" style="display:none">
+
+  <h1>TypeScript для AQA <span>типы · компиляция · tsconfig.json · type guards · utility types | Day 29</span></h1>
+
+  <!-- TS CARD 1: Primitive Types + Inference -->
+  <div class="card">
+    <h2>Примитивные типы + инференс</h2>
+    <table>
+      <tr><th>Тип</th><th>Аннотация</th><th>Пример</th></tr>
+      <tr><td><code>string</code></td><td><code>let x: string</code></td><td><code>'click'</code>, <code>"#id"</code></td></tr>
+      <tr><td><code>number</code></td><td><code>let x: number</code></td><td><code>42</code>, <code>3.14</code>, <code>NaN</code></td></tr>
+      <tr><td><code>boolean</code></td><td><code>let x: boolean</code></td><td><code>true</code>, <code>false</code></td></tr>
+      <tr><td><code>null</code></td><td><code>let x: null</code></td><td><code>null</code></td></tr>
+      <tr><td><code>undefined</code></td><td><code>let x: undefined</code></td><td><code>undefined</code></td></tr>
+      <tr><td><code>symbol</code></td><td><code>let x: symbol</code></td><td><code>Symbol('key')</code></td></tr>
+      <tr><td><code>bigint</code></td><td><code>let x: bigint</code></td><td><code>9007199254740991n</code></td></tr>
+    </table>
+    <pre>// Явная аннотация:
+let testName: string = 'Login test';
+let retries:  number = 3;
+let isFlaky:  boolean = false;
+
+// Инференс (TS угадывает сам):
+let env = 'staging'; // тип: string ✅
+env = 42;            // Error! ← string ≠ number</pre>
+    <p class="note">TS = JS + статическая типизация. Те же 7 примитивов, ошибки — при компиляции, не в Runtime.</p>
+  </div>
+
+  <!-- TS CARD 2: Object, Array, Tuple Types -->
+  <div class="card">
+    <h2>Object, Array, Tuple + interface vs type</h2>
+    <pre>// Объектный тип (inline):
+const res: { status: string; code: number }
+           = { status: 'ok', code: 200 };
+
+// interface — для объектов / классов:
+interface ApiResponse {
+  status: string;
+  data:   unknown;
+  code?:  number;  // ? = необязательное поле
+}
+
+// type — мощнее (union, intersection, literal):
+type Selector = string;
+type Env = 'local' | 'staging' | 'prod';
+
+// Массив (два эквивалентных синтаксиса):
+const sels: string[]       = ['#btn', '.link'];
+const nums: Array&lt;number&gt;  = [1, 2, 3];
+
+// Кортеж — фиксированная длина + типы позиций:
+type TestRow = [string, number, boolean];
+const row: TestRow = ['Login test', 3, true];
+// row[0] → string ✅   row[3] = 'x' → Error!</pre>
+    <p class="note"><strong>interface</strong> → для Page Objects и форм данных. <strong>type</strong> → для union, literal, utility types.</p>
+  </div>
+
+  <!-- TS CARD 3 wide: any vs unknown vs void vs never -->
+  <div class="card wide">
+    <h2>any vs unknown vs void vs never <span class="tag warn">Ключевые типы</span></h2>
+    <div class="row">
+      <div class="col">
+        <table>
+          <tr><th>Тип</th><th>Значение</th><th>Присвоить что угодно?</th><th>Использовать без проверки?</th></tr>
+          <tr><td><code>any</code></td><td>«Мне плевать на типы»</td><td>✅ Да</td><td>✅ Да — опасно!</td></tr>
+          <tr><td><code>unknown</code></td><td>«Тип неизвестен — API-ответ»</td><td>✅ Да</td><td>❌ Нет — требует narrowing</td></tr>
+          <tr><td><code>void</code></td><td>«Ничего не возвращает»</td><td>❌ Нет</td><td>❌ Нет</td></tr>
+          <tr><td><code>never</code></td><td>«Код недостижим / always throws»</td><td>❌ Нет</td><td>n/a</td></tr>
+        </table>
+        <p class="note"><code>any</code> в тестах — грубейший антипаттерн! Отключает все проверки TS. Используй <code>unknown</code> + narrowing.</p>
+      </div>
+      <div class="col">
+        <pre class="bad">// any — ❌ антипаттерн:
+function parse(data: any) {
+  data.nonExistentMethod(); // TS молчит → Runtime Error!
+}</pre>
+        <pre class="good">// unknown + narrowing — ✅:
+function handle(data: unknown) {
+  if (typeof data === 'object' && data !== null
+      && 'status' in data) {
+    console.log((data as {status: string}).status);
+  }
+}</pre>
+        <pre>// void — функция-действие Page Object:
+async function clickLogin(): Promise&lt;void&gt; {
+  await page.click('#login-btn');
+  // return → тип void ✅
+}
+
+// never — хелпер ассертов:
+function assertNever(val: never): never {
+  throw new Error(`Unexpected: ${val}`);
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- TS CARD 4: Advanced Types -->
+  <div class="card">
+    <h2>Advanced Types <span class="tag purple">Union · Intersection · Literal</span></h2>
+    <pre>// Union — «либо-либо»:
+type UserId = string | number;  // ID из разных источников
+type Status = 'pass' | 'fail' | 'skip';
+
+// Literal — ограничить точными значениями:
+const env: 'local' | 'staging' | 'prod' = 'staging';
+
+// Intersection — «должен иметь всё»:
+type Admin = User &amp; { role: 'admin'; perms: string[] };
+
+// Nullable — явное разрешение пустоты:
+type MaybeUser = User | null | undefined;
+
+// Non-null assertion ! — «я знаю, что не null»:
+const el = document.getElementById('btn')!; // осторожно!
+
+// Optional chaining + TypeScript:
+const city = user?.address?.city; // тип: string | undefined</pre>
+    <p class="note">Literal types — лучший способ типизировать окружения, статусы, режимы. IDE сама подскажет допустимые значения.</p>
+  </div>
+
+  <!-- TS CARD 5: Generics + Utility Types -->
+  <div class="card">
+    <h2>Generics + Utility Types</h2>
+    <pre>// Generic — тип-шаблон:
+function first&lt;T&gt;(arr: T[]): T { return arr[0]; }
+first(['a','b']);  // тип: string ✅
+first([1, 2]);     // тип: number ✅
+
+Promise&lt;string&gt;          // async fn → string
+Record&lt;string, number&gt;   // { [key: string]: number }</pre>
+    <p class="def" style="margin-top:3px"><strong>Utility Types</strong> — готовые трансформаторы типов:</p>
+    <table>
+      <tr><th>Utility</th><th>Что делает</th><th>Пример</th></tr>
+      <tr><td><code>Partial&lt;T&gt;</code></td><td>Все поля необязательны</td><td>Override-патч конфига</td></tr>
+      <tr><td><code>Required&lt;T&gt;</code></td><td>Все поля обязательны</td><td>Финальный конфиг после defaults</td></tr>
+      <tr><td><code>Readonly&lt;T&gt;</code></td><td>Все поля read-only</td><td>Иммутабельная фикстура</td></tr>
+      <tr><td><code>Pick&lt;T,K&gt;</code></td><td>Выбрать поля K</td><td><code>Pick&lt;User,'id'|'name'&gt;</code></td></tr>
+      <tr><td><code>Omit&lt;T,K&gt;</code></td><td>Удалить поля K</td><td><code>Omit&lt;User,'password'&gt;</code></td></tr>
+      <tr><td><code>Record&lt;K,V&gt;</code></td><td>Словарь K→V</td><td><code>Record&lt;Env,Config&gt;</code></td></tr>
+    </table>
+  </div>
+
+  <!-- TS CARD 6: Type Guards + Narrowing -->
+  <div class="card">
+    <h2>Type Guards + Narrowing</h2>
+    <p class="def">Narrowing — сужение типа через проверку. Обязательно при <code>unknown</code> и union-типах.</p>
+    <pre>// typeof narrowing:
+function process(val: string | number) {
+  if (typeof val === 'string') {
+    val.toUpperCase(); // TS: string ✅
+  } else {
+    val.toFixed(2);    // TS: number ✅
+  }
+}
+
+// instanceof narrowing:
+if (err instanceof Error) {
+  console.log(err.message); // TS: Error ✅
+}
+
+// in narrowing (для object):
+if ('code' in response) {
+  response.code; // TS: есть поле code ✅
+}
+
+// Пользовательский type guard:
+function isApiError(e: unknown): e is ApiError {
+  return typeof e === 'object' && e !== null
+         &amp;&amp; 'code' in e &amp;&amp; 'message' in e;
+}
+
+if (isApiError(err)) {
+  err.code;    // TS: ApiError ✅
+}</pre>
+  </div>
+
+  <!-- TS CARD 7: Компиляция + Установка -->
+  <div class="card">
+    <h2>Компиляция + Установка</h2>
+    <div class="tree">.ts файл → tsc (компилятор) → .js → Node.js</div>
+    <p class="def"><strong>On-the-fly (в памяти):</strong></p>
+    <table>
+      <tr><th>Раннер</th><th>Компилятор</th><th>Примечание</th></tr>
+      <tr><td>Playwright</td><td>esbuild</td><td>Быстро, нативно, .ts из коробки</td></tr>
+      <tr><td>Cypress</td><td>Webpack/Vite</td><td>Встроенный препроцессор</td></tr>
+    </table>
+    <p class="note">Физические .js файлы не нужны → <code>noEmit: true</code> в tsconfig. tsconfig нужен для IntelliSense и type-check.</p>
+    <pre>npm install -D typescript @types/node
+
+# Инициализация:
+npx tsc --init
+
+# Type-check без emit:
+npx tsc --noEmit</pre>
+    <pre>// package.json:
+"scripts": {
+  "typecheck": "tsc --noEmit"
+}</pre>
+  </div>
+
+  <!-- TS CARD 8 wide: tsconfig.json — эталонный конфиг -->
+  <div class="card wide">
+    <h2>tsconfig.json — эталонный конфиг для AQA</h2>
+    <pre>{
+  "compilerOptions": {
+    // Окружение:
+    "target":               "ES2022",     // JS-стандарт на выходе (Node.js 18+)
+    "module":               "NodeNext",   // ESM: import/export
+    "moduleResolution":     "NodeNext",   // Как ищет библиотеки
+    "lib":                  ["ES2022", "DOM"], // Типы JS + DOM-браузера
+
+    // Строгость (рекомендовано включить всё):
+    "strict":               true,         // Максимальная строгость (включает 8+ проверок)
+    "noImplicitAny":        true,         // Запрет неявного any
+    "strictNullChecks":     true,         // Проверка null/undefined перед использованием
+
+    // Совместимость:
+    "esModuleInterop":      true,         // CJS как ESM: import lodash from 'lodash'
+    "resolveJsonModule":    true,         // import data from './fixture.json' + автодополнение
+    "skipLibCheck":         true,         // Не проверять node_modules → +80% скорость
+    "forceConsistentCasingInFileNames": true, // Защита Mac/Linux/Win регистра
+
+    // Сборка:
+    "noEmit":               true          // Не писать .js на диск (раннеры = in-memory)
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "exclude": ["node_modules"]
+}</pre>
+  </div>
+
+  <!-- TS CARD 9 wide: Key tsconfig options explained -->
+  <div class="card wide">
+    <h2>Ключевые настройки tsconfig — что и зачем</h2>
+    <table>
+      <tr><th>Настройка</th><th>Зачем в AQA</th><th>Что будет без неё</th></tr>
+      <tr><td><code>strict: true</code></td><td>Включает весь пакет проверок: noImplicitAny + strictNullChecks + ещё 6 опций</td><td>Пропускает ошибки типов, false sense of safety</td></tr>
+      <tr><td><code>noImplicitAny</code></td><td>Заставляет явно писать типы. Если не написал — TS ошибка, не тихий any</td><td>Переменные без аннотации тихо становятся any</td></tr>
+      <tr><td><code>strictNullChecks</code></td><td>Нельзя вызвать метод на значении, которое может быть null/undefined</td><td>Классические NPE: <code>Cannot read property 'x' of null</code></td></tr>
+      <tr><td><code>resolveJsonModule</code></td><td>Импорт JSON-фикстур с автодополнением полей прямо в IDE</td><td>Ошибка при попытке <code>import data from './users.json'</code></td></tr>
+      <tr><td><code>skipLibCheck</code></td><td>Не проверяет типы в node_modules. На 10k тестов экономит минуты</td><td>TS тратит время на проверку чужих библиотек</td></tr>
+      <tr><td><code>noEmit</code></td><td>Playwright/Cypress компилируют в память. Физические .js не нужны</td><td>TS будет создавать .js рядом с .ts — засоряет проект</td></tr>
+      <tr><td><code>target: ES2022</code></td><td>Поддержка async/await, optional chaining, BigInt нативно для Node 18+</td><td>Старый target полифиллит async/await — лишний код</td></tr>
+      <tr><td><code>lib: ["DOM"]</code></td><td>Типы браузера (HTMLElement, fetch, console) для JS-инъекций через CDP</td><td>Ошибка: Cannot find name 'HTMLElement'</td></tr>
+    </table>
+    <p class="note" style="margin-top:3px">Эталон для TypeScript 5.x + Node.js 18+ + Playwright / Cypress. Для Playwright-only можно удалить <code>"DOM"</code> из lib.</p>
+  </div>
+
+  <!-- TS CARD 10 full: AQA Quick Reference TypeScript -->
+  <div class="card full">
+    <h2>Шпаргалка AQA — TypeScript: когда что использовать</h2>
+    <table>
+      <tr>
+        <th>Ситуация в тестах / коде</th>
+        <th>Решение</th>
+        <th>Пример</th>
+        <th>Ловушка / примечание</th>
+      </tr>
+      <tr>
+        <td>Типизировать фикстуру / контракт API</td>
+        <td><code>interface</code> или <code>type</code></td>
+        <td><code>interface User { id: number; name: string; }</code></td>
+        <td><code>interface</code> — для объектов; <code>type</code> — для union/literal</td>
+      </tr>
+      <tr>
+        <td>Поле необязательное (может отсутствовать)</td>
+        <td>Оператор <code>?</code> в interface</td>
+        <td><code>interface Cfg { url: string; timeout?: number; }</code></td>
+        <td>Тип поля становится <code>number | undefined</code></td>
+      </tr>
+      <tr>
+        <td>Переменная может быть null или undefined</td>
+        <td>Union с null: <code>T | null</code></td>
+        <td><code>let user: User | null = null;</code></td>
+        <td>При <code>strictNullChecks</code> TS требует проверки перед использованием</td>
+      </tr>
+      <tr>
+        <td>Обработать динамический ответ от API</td>
+        <td><code>unknown</code> + type narrowing / type guard</td>
+        <td><code>function handle(data: unknown) { if (isApiResponse(data)) {...} }</code></td>
+        <td>Никогда не используй <code>any</code> — он отключает все проверки TS</td>
+      </tr>
+      <tr>
+        <td>Функция-действие Page Object (ничего не возвращает)</td>
+        <td>Возвращаемый тип <code>Promise&lt;void&gt;</code></td>
+        <td><code>async clickLogin(): Promise&lt;void&gt; { await page.click(...) }</code></td>
+        <td><code>void</code> = нельзя использовать возврат в выражениях</td>
+      </tr>
+      <tr>
+        <td>Хелпер-ассерт, который всегда бросает ошибку</td>
+        <td>Возвращаемый тип <code>never</code></td>
+        <td><code>function fail(msg: string): never { throw new Error(msg); }</code></td>
+        <td>TS знает: код после вызова недостижим → лучший вывод типов</td>
+      </tr>
+      <tr>
+        <td>Типизировать окружение: local/staging/prod</td>
+        <td>Literal union type</td>
+        <td><code>type Env = 'local' | 'staging' | 'prod';</code></td>
+        <td>IDE автодополнит допустимые значения. Опечатки = ошибка компиляции</td>
+      </tr>
+      <tr>
+        <td>Импортировать JSON фикстуру с автодополнением</td>
+        <td><code>resolveJsonModule: true</code> в tsconfig</td>
+        <td><code>import users from './fixtures/users.json';</code></td>
+        <td>TS инферит тип из JSON-структуры — поля доступны через IDE</td>
+      </tr>
+      <tr>
+        <td>Иммутабельная тестовая фикстура</td>
+        <td><code>Readonly&lt;T&gt;</code> или <code>as const</code></td>
+        <td><code>const cfg = { url: '...' } as const;</code></td>
+        <td><code>as const</code> → все поля readonly + literal types вместо wide</td>
+      </tr>
+      <tr>
+        <td>Частичный override конфига (stubs, mocks)</td>
+        <td><code>Partial&lt;T&gt;</code></td>
+        <td><code>function stub(overrides: Partial&lt;Config&gt;) { return {...base, ...overrides}; }</code></td>
+        <td>Все поля необязательны. Используй с Omit чтобы сделать часть обязательной</td>
+      </tr>
+    </table>
+  </div>
+
+</div><!-- /page-ts -->
+
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(function(p) {
+      p.style.display = 'none';
+    });
+    document.querySelectorAll('.nav-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    document.getElementById('page-' + name).style.display = 'grid';
+    document.getElementById('btn-' + name).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
